@@ -1,5 +1,5 @@
 const express = require('express');
-const socketio = require('socket.io');
+const socketIo = require('socket.io');
 
 const router = express.Router();
 const { addUser } = require('./users.js');
@@ -13,22 +13,24 @@ router.get('/', (req, res) => {
 
 const app = express();
 const server = require('http').createServer(app);
-const io = socketio(server);
+const io = socketIo(server);
 
 
 io.on('connection', (socket) => {
     console.log('new connection');
 
     socket.on('join', ({name, room}, callback) => {
+
         const {error, user} = addUser({id: socket.id, name: name, room: room});
 
         if(error) return callback(error);
 
-        socket.broadcast.to(user.room).emit('message',
-        {user:'admin', text: `${user.name}, has joined to room ${user.room}`})
-        socket.join(user.room);
-
-        callback();
+        socket.join(user.room, ()=>{
+            console.log('user join room request: ', {user})
+            socket.broadcast.to(user.room).emit('message',
+            {user:'admin', text: `${user.name}, has joined to room ${user.room}`})
+            callback();
+        });
     });
 
     socket.on('disconnect', () => {
