@@ -14,18 +14,39 @@
 }
 
 .App-header {
-  /* background-color: #282c34; */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* justify-content: center; */
-  font-size: calc(10px + 2vmin);
-  /* color: white; */
+}
+
+.mainHomeContainer{
+  margin-top: 20px;
+  align-items: center;
+}
+.startBtn {
+  margin-left: 16px !important;
+}
+.sessionInput{
+  margin-left: 16px !important;
+}
+
+.MuiInputBase-input{
+  padding: 16px 0px 0px 0px !important;
+}
+.MuiInputLabel-outlined{
+  transform: translate(4px, 8px) scale(1) !important;
+}
+.MuiInputLabel-outlined.MuiInputLabel-shrink{
+  transform: translate(14px, -6px) scale(.75) !important;
 }
 
 .App-link {
   color: #61dafb;
+}
+
+.gridRow{
+  margin:32px 32px !important;
 }
 
 @keyframes App-logo-spin {
