@@ -3,7 +3,7 @@ const users = [];
 const addUser = ({id, name, room}) => {
     const userExist = users.find((user) => user.room === room && user.name === name);
     if (userExist) {
-        return {error: 'user is exist'};
+        return {error: 'user exists'};
     }
 
     const user = {id, name, room};
