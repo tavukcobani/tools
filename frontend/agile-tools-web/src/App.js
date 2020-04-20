@@ -1,12 +1,16 @@
 import React from 'react';
+import { createBrowserHistory } from 'history';
 
 import { AppBar, IconButton, Typography, Toolbar } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import './App.css';
-import Home from './Components/HomeComponent';
+import Home from './components/Home';
+import PokerSession from './components/PokerSession';
+import { Route} from 'react-router';
+import {ConnectedRouter} from 'connected-react-router';
+// import { Router, Route, Link } from 'react-router'
 
-
-function App() {
+function App(props) {
   return (
     <div>
       <AppBar position="static">
@@ -19,7 +23,11 @@ function App() {
             </Typography>
         </Toolbar>
       </AppBar>
-      <Home></Home>
+      <ConnectedRouter history={props.history}>
+      <Route exact path="/" component={Home}/>
+      <Route path="/poker" component={PokerSession}/>
+      </ConnectedRouter>
+      {/* <Home></Home> */}
     </div>
   );
 }
