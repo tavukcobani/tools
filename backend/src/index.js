@@ -3,7 +3,7 @@ const socketIo = require('socket.io');
 const uuid = require('uuid/v4');
 const router = express.Router();
 const { addUser } = require('./users.js');
-
+const { join, remove } = require('./rooms');
 
 const PORT = 4000;
 
@@ -32,21 +32,29 @@ io.on('connection', (socket) => {
         });
     });
 
-    socket.on('join', ({name, room}, callback) => {
-
-        const {error, user} = addUser({id: socket.id, name: name, room: room});
+    socket.on('join', ({name, roomId}, callback) => {
+        const {error, room} = join(socket.id, name, roomId)
 
         if(error) return callback(error);
 
-        socket.join(user.room, ()=>{
-            console.log('user join room request: ', {user})
-            socket.broadcast.to(user.room).emit('message',
-            {user:'admin', text: `${user.name}, has joined to room ${user.room}`})
+        socket.join(room.id, ()=>{
+            socket.broadcast.to(room.id).emit('message',
+            {user:'admin', text: room});
             callback();
         });
     });
 
     socket.on('disconnect', () => {
+        const room = remove(socket.id);
+
+        if(room.users && room.users.lenght > 0) {
+            socket.broadcast.to(room.id).emit('message', {
+                user: 'admin', text: room
+            });
+        }
+
+        //todo: remove room if no user exist
+
         console.log('user has disconnected!');
     });
 });
