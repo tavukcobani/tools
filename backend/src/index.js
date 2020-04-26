@@ -1,9 +1,9 @@
 const express = require('express');
 const socketIo = require('socket.io');
-const uuid = require('uuid/v4');
+//const uuid = require('uuid/v4');
 const router = express.Router();
-const { addUser } = require('./users.js');
-
+//const { addUser } = require('./users.js');
+const { join, remove } = require('./rooms');
 
 const PORT = 4000;
 
@@ -18,35 +18,29 @@ const io = socketIo(server);
 
 io.on('connection', (socket) => {
     console.log('new connection');
-    socket.on('newSession', ({name}, callback) => {
-        console.log('Creating new session for user')
-        const room = uuid();
-        const {error, user} = addUser({id: socket.id, name: name, room: room});
-        if(error) return callback(error);
-        socket.join(user.room, ()=>{
-            socket.emit('message',{
-                sessionId:room
-            })
-            console.log('joining new user to the new room ', {user})
-            callback();
-        });
-    });
 
-    socket.on('join', ({name, room}, callback) => {
+    socket.on('join', ({ name, roomId }, callback) => {
 
-        const {error, user} = addUser({id: socket.id, name: name, room: room});
+        const { error, room } = join(socket.id, name, roomId)
+        if (error) return callback(error);
 
-        if(error) return callback(error);
-
-        socket.join(user.room, ()=>{
-            console.log('user join room request: ', {user})
-            socket.broadcast.to(user.room).emit('message',
-            {user:'admin', text: `${user.name}, has joined to room ${user.room}`})
+        socket.join(room.id, () => {
+            console.log('socket joined room ' + roomId)
+            io.to(room.id).emit('message',
+                { room });
             callback();
         });
     });
 
     socket.on('disconnect', () => {
+        const room = remove(socket.id);
+
+        if (room && room.users && room.users.length > 0) {
+            socket.broadcast.to(room.id).emit('message', {room});
+        }
+
+        //todo: remove room if no user exist
+
         console.log('user has disconnected!');
     });
 });
