@@ -13,7 +13,7 @@ export default class PokerSession extends React.Component {
             role: 'Admin'
         };
         this.handleUserNameChange = this.handleUserNameChange.bind(this);
-        this.handleJoinSession= this.handleJoinSession.bind(this);
+        this.handleJoinSession = this.handleJoinSession.bind(this);
     }
     componentDidMount() {
         socket.on('message', (message) => {
@@ -28,17 +28,15 @@ export default class PokerSession extends React.Component {
         this.setState({ userName: e.target.value });
     }
 
-    handleJoinSession(){
-        socket.emit('join', { name: this.state.userName, room: this.state.sessionId }, () => {
-                    console.log(`user joined room ${this.state.sessionId} as ${this.state.userName}`);
-                });
-
-      //  console.log('sessionId: '+  this.state.sessionId + 'user Name: '+this.state.userName )
+    handleJoinSession() {
+        socket.emit('join', { name: this.state.userName, roomId: this.state.sessionId }, (err) => {
+            console.log(err)
+        });
     }
 
     render() {
         return (<Container>
-           
+
             <Grid item xs={12} className="gridRow">
                 <div>
                     <Typography variant="body1" component="span"></Typography>

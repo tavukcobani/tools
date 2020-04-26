@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, TextField, Typography, Grid, Card, Container } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { v4 as uuidv4} from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 
 class HomeComponent extends React.Component {
@@ -35,9 +35,9 @@ class HomeComponent extends React.Component {
                                 <div>
                                     <Typography variant="body1" component="span">Join Existing Session</Typography>
                                     <TextField id="room" label="Session Id" variant="outlined" required className="sessionInput"
-                                    error={this.state.sessionIdError} 
-                                    onChange={this.handleSessionIdChange}
-                                    value={this.state.sessionId} />
+                                        error={this.state.sessionIdError}
+                                        onChange={this.handleSessionIdChange}
+                                        value={this.state.sessionId} />
                                     <Button variant="contained" onClick={this.handleJoinExistingSession} color="primary" className="startBtn">Join</Button>
                                 </div>
                             </Grid>
@@ -55,36 +55,26 @@ class HomeComponent extends React.Component {
         this.setState({ newUserName: e.target.value });
     }
 
-    handleJoinExistingSession(){
-        if(!this.state.sessionId){
-            this.setState({ sessionIdError: true }); 
+    handleJoinExistingSession() {
+        if (!this.state.sessionId) {
+            this.setState({ sessionIdError: true });
         }
-        else{
-            this.props.history.push('/pokerSession/'+ this.state.sessionId);
+        else {
+            this.props.history.push('/pokerSession/' + this.state.sessionId);
         }
     }
 
-    handleSessionIdChange(e){
-        if(e.target.value){
+    handleSessionIdChange(e) {
+        if (e.target.value) {
             this.setState({ sessionIdError: false });
         }
         this.setState({ sessionId: e.target.value });
     }
     handleStartNewSession() {
-    this.props.history.push('/pokerSession/'+ uuidv4());
+        this.props.history.push('/pokerSession/' + uuidv4());
     }
 }
 
-
-// function onBtnClick(e) {
-//     e.preventDefault();
-//     const name = document.getElementById("name").value;
-//     const room = document.getElementById("room").value;
-
-//     socket.emit('join', { name, room }, () => {
-//         console.log(`user joined room ${room} as ${name}`);
-//     });
-// }
 
 const mapStateToProps = (state, dispatch) => ({
     poker: state.poker
