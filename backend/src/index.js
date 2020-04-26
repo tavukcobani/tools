@@ -36,9 +36,7 @@ io.on('connection', (socket) => {
         const room = remove(socket.id);
 
         if (room && room.users && room.users.length > 0) {
-            socket.broadcast.to(room.id).emit('message', {
-                user: 'admin', text: room
-            });
+            socket.broadcast.to(room.id).emit('message', {room});
         }
 
         //todo: remove room if no user exist

@@ -10,7 +10,11 @@ const join = (userId, name, roomId) => {
 };
 
 const remove = (userId) => {
-    return rooms.find((room) => { return room.users.some(user => { return user.id == userId }); })
+    const room = rooms.find((room) => { return room.users.some(user => { return user.id == userId }); })
+    if (room) {
+        room.users = room.users.filter((usr) => { return usr.id !== userId });
+    }
+    return room;
 };
 
 const addUserToExistingRoom = (room, userId, name) => {
