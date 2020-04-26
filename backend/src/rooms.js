@@ -25,13 +25,18 @@ const addUserToExistingRoom = (room, userId, name) => {
 }
 
 const createNewRoomForUser = (userId, name, roomId) => {
-    const room = {id: roomId, users: {id: userId, name: name}};
+    const room = {id: roomId, users: [{id: userId, name: name}]};
     rooms.push(room);
     return {room};
 }
 
 const getRoom = (roomId) => {
-    return rooms.find((room) => room.id == roomId);
+    if(rooms){
+        return rooms.find((room) => room.id == roomId);
+    }
+    else{
+        return {users:[]}
+    }
 };
 
 module.exports = { join, remove };
