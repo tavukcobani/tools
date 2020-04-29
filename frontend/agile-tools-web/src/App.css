@@ -48,6 +48,14 @@
 .gridRow{
   margin:32px 32px !important;
 }
+.container{
+  text-align: center;
+  margin:32px 32px !important;
+}
+
+.parentGrid{
+  margin-top:32px;
+}
 
 @keyframes App-logo-spin {
   from {
