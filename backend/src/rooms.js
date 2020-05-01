@@ -46,10 +46,20 @@ const getRoom = (roomId) => {
 
 const setRoomName = (roomId, name) => {
     const room = rooms.find((room) => room.id == roomId);
-    if(room){
+    if (room) {
         room.name = name;
     }
     return room;
 }
+const setUserVote = (roomId, userId, vote) => {
+    const room = rooms.find((room) => room.id == roomId);
+    if (room) {
+        const user = room.users.find((usr) => { usr.id == userId })
+        if (user) {
+            user.vote = vote;
+        }
+    }
+    return room;
+}
 
-module.exports = { join, remove, setRoomName };
+module.exports = { join, remove, setRoomName, setUserVote };

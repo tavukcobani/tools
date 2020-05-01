@@ -57,7 +57,7 @@ class PokerSession extends React.Component {
         const usersDisplay = users.map((usr) => {
            
            return (<div key={usr.id}>
-                {usr.name}: {usr.id}
+                {usr.name}: {usr.vote}
             </div>)
         });
         return (
