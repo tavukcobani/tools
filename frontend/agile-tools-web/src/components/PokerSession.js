@@ -39,19 +39,8 @@ class PokerSession extends React.Component {
 
     setSessionName(){
         socket.emit('setRoomName', { name: this.state.sessionName, roomId: this.state.sessionId,  }, () => {});
-        //this.dispatch()
-      //  this.setState({ sessionName: e.target.value });
     }
-    // handleObserverJoinSession() {
-    //     if (!this.state.userName) {
-    //         this.setState({ userNameError: true });
-    //     }
-    //     else { 
-    //         socket.emit('join', { name: this.state.userName, roomId: this.state.sessionId, role: 'observer' }, () => {
-    //             this.setState({ userJoined: true });
-    //         });
-    //     }
-    // }
+
     handleJoinSession(role) {
         if (!this.state.userName) {
             this.setState({ userNameError: true });
