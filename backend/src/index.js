@@ -19,9 +19,9 @@ const io = socketIo(server);
 io.on('connection', (socket) => {
     console.log('new connection');
 
-    socket.on('join', ({ name, roomId }, callback) => {
+    socket.on('join', ({ name, roomId, role }, callback) => {
 
-        const { error, room } = join(socket.id, name, roomId)
+        const { error, room } = join(socket.id, name, roomId, role)
         if (error) return callback(error);
 
         socket.join(room.id, () => {

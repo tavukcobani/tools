@@ -16,6 +16,7 @@ class PokerSession extends React.Component {
         };
         this.handleUserNameChange = this.handleUserNameChange.bind(this);
         this.handleJoinSession = this.handleJoinSession.bind(this);
+        this.handleObserverJoinSession = this.handleObserverJoinSession.bind(this);
     }
     componentDidMount() {
         socket.on('message', (message) => {
@@ -31,14 +32,24 @@ class PokerSession extends React.Component {
         this.setState({ userName: e.target.value });
     }
 
-    handleJoinSession(e) {
+    handleObserverJoinSession() {
+        if (!this.state.userName) {
+            this.setState({ userNameError: true });
+        }
+        else { 
+            socket.emit('join', { name: this.state.userName, roomId: this.state.sessionId, role: 'observer' }, () => {
+                this.setState({ userJoined: true });
+            });
+        }
+    }
+    handleJoinSession() {
         if (!this.state.userName) {
             this.setState({ userNameError: true });
         }
         else {
-            this.setState({ userJoined: true });
-            socket.emit('join', { name: this.state.userName, roomId: this.state.sessionId }, (err) => {
-                console.log(err)
+
+            socket.emit('join', { name: this.state.userName, roomId: this.state.sessionId, role: 'player' }, () => {
+                this.setState({ userJoined: true });
             });
         }
     }
@@ -61,7 +72,8 @@ class PokerSession extends React.Component {
                                 error={this.state.userNameError}
                                 onChange={this.handleUserNameChange}
                                 value={this.state.userName} />
-                            <Button variant="contained" onClick={this.handleJoinSession} color="primary" className="startBtn">Join</Button>
+                            <Button variant="contained" onClick={this.handleJoinSession} color="primary" className="startBtn">Player</Button>
+                            <Button variant="contained" onClick={this.handleObserverJoinSession} color="primary" className="startBtn">Observer</Button>
                         </div>
                     }
                 </div>
