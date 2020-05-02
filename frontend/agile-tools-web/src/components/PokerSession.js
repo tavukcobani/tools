@@ -63,7 +63,6 @@ class PokerSession extends React.Component {
         const fibonacci = ['0', '1/2', '1', '2', '3', '5', '8', '13', '20', '40', '100', '?'];
         let users = this.props.room.users || [];
         const usersDisplay = users.map((usr) => {
-
             return (<div key={usr.id}>
                 {usr.name}: {usr.vote}
             </div>)
@@ -75,15 +74,13 @@ class PokerSession extends React.Component {
                 votingButtonsArray.push(<Button variant="contained" size="small" color="primary" key={'vote_btn_' + index} onClick={() => this.handleVote(element)} className="votingButton">{element}</Button>);
             });
             votingButtons = (
-                <div className='votingContainer'>
+                
                     <div className='votingDiv'>
                         {votingButtonsArray}
-                    </div>
                 </div>);
         }
         return (
             <div className='container'>
-
                 <div>
                     <Typography variant="body1" component="span"></Typography>
                     {!this.state.userJoined &&
@@ -98,25 +95,22 @@ class PokerSession extends React.Component {
                     }
                     {this.state.userJoined &&
                         <div>
-                            {/* TODO ADD display for session name if session name is set */}
                             <TextField id="roomName" label="Session Name" variant="outlined" required className="sessionInput"
                                 onChange={this.handleSessionNameChange}
                             />
                             <Button variant="contained" onClick={() => this.setSessionName()} color="primary" className="startBtn">Set</Button>
-                            <Typography>{this.props.room.name}</Typography>
+                            <Typography variant='h5'>{this.props.room.name}</Typography>
                             <div>
                             </div>
                         </div>
                     }
-
                 </div>
                 <div>
-                    <div>{usersDisplay}</div>
+                    <div className='usersContainer'>{usersDisplay}</div>
                 </div>
+                <div className='votingContainer'>
                 {votingButtons}
-
-
-
+                </div>
             </div>
         )
     }
