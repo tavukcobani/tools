@@ -22,13 +22,14 @@ io.on('connection', (socket) => {
     socket.on('join', ({ name, roomId, role }, callback) => {
 
         const { error, room } = join(socket.id, name, roomId, role)
-        if (error) return callback(error);
+        if (error) return callback({error});
 
         socket.join(room.id, () => {
             console.log('socket joined room ' + roomId)
+
             io.to(room.id).emit('message',
                 { room });
-            callback();
+            callback({userId: socket.id});
         });
     });
 
@@ -39,7 +40,6 @@ io.on('connection', (socket) => {
     })
 
     socket.on('setVote', ({ roomId, userId,  vote }) => {
-        console.log('set vote called')
         const room = setUserVote(roomId, userId, vote);
         io.to(roomId).emit('message', { room });
     })

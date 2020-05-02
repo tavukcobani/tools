@@ -51,10 +51,11 @@ const setRoomName = (roomId, name) => {
     }
     return room;
 }
+
 const setUserVote = (roomId, userId, vote) => {
     const room = rooms.find((room) => room.id == roomId);
     if (room) {
-        const user = room.users.find((usr) => { usr.id == userId })
+        const user = room.users.find((usr) => usr.id == userId )
         if (user) {
             user.vote = vote;
         }

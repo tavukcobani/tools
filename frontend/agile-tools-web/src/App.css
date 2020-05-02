@@ -53,6 +53,19 @@
   margin:32px 32px !important;
 }
 
+.votingContainer{
+ width: 100%;
+ text-align: center;
+}
+
+.votingButton{
+  margin: 4px !important;
+}
+
+.votingDiv{
+  max-width: 500px;
+}
+
 .parentGrid{
   margin-top:32px;
 }
