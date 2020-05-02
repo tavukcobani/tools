@@ -63,4 +63,15 @@ const setUserVote = (roomId, userId, vote) => {
     return room;
 }
 
-module.exports = { join, remove, setRoomName, setUserVote };
+
+const clearVotes = (roomId) => {
+    const room = rooms.find((room) => room.id == roomId);
+    if (room) {
+        room.users.forEach(usr => {
+            usr.vote = undefined;
+        })
+    }
+    return room;
+}
+
+module.exports = { join, remove, setRoomName, setUserVote, clearVotes };

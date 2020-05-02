@@ -68,6 +68,10 @@
   margin:auto;
 }
 
+.clearVotesButton{
+  margin-top: 20px;
+}
+
 .usersContainer{
   margin-top: 50px;
 }

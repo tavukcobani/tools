@@ -3,7 +3,7 @@ const socketIo = require('socket.io');
 //const uuid = require('uuid/v4');
 const router = express.Router();
 //const { addUser } = require('./users.js');
-const { join, remove, setRoomName, setUserVote } = require('./rooms');
+const { join, remove, setRoomName, setUserVote , clearVotes} = require('./rooms');
 
 const PORT = 4000;
 
@@ -42,9 +42,13 @@ io.on('connection', (socket) => {
     socket.on('setVote', ({ roomId, userId,  vote }) => {
         const room = setUserVote(roomId, userId, vote);
         io.to(roomId).emit('message', { room });
+    });
+
+    socket.on('clearVotes', ({ roomId }) => {
+        const room = clearVotes(roomId);
+        io.to(roomId).emit('message', { room });
     })
-
-
+    
     // TODO: handle socket user events 'set user vote, set room title, show all votes, clear all votes' 
 
     socket.on('disconnect', () => {

@@ -21,6 +21,7 @@ class PokerSession extends React.Component {
         this.setSessionName = this.setSessionName.bind(this);
         this.handleSessionNameChange = this.handleSessionNameChange.bind(this);
         this.vote = this.handleVote.bind(this);
+        this.clearVotes = this.clearVotes.bind(this);
     }
     componentDidMount() {
         socket.on('message', (message) => {
@@ -53,11 +54,17 @@ class PokerSession extends React.Component {
             });
         }
     }
+
     handleVote(voteValue) {
         socket.emit('setVote', { userId: this.state.userId, roomId: this.state.sessionId, vote: voteValue }, () => {
             this.setState({ userJoined: true });
         });
     }
+    clearVotes() {
+        socket.emit('clearVotes', { roomId: this.state.sessionId }, () => {
+        });
+    }
+
 
     render() {
         const fibonacci = ['0', '1/2', '1', '2', '3', '5', '8', '13', '20', '40', '100', '?'];
@@ -74,9 +81,9 @@ class PokerSession extends React.Component {
                 votingButtonsArray.push(<Button variant="contained" size="small" color="primary" key={'vote_btn_' + index} onClick={() => this.handleVote(element)} className="votingButton">{element}</Button>);
             });
             votingButtons = (
-                
-                    <div className='votingDiv'>
-                        {votingButtonsArray}
+
+                <div className='votingDiv'>
+                    {votingButtonsArray}
                 </div>);
         }
         return (
@@ -108,8 +115,13 @@ class PokerSession extends React.Component {
                 <div>
                     <div className='usersContainer'>{usersDisplay}</div>
                 </div>
+                <div className='votingControl'>
+                    {this.state.userJoined &&
+                        <Button variant="contained" onClick={() => this.clearVotes()} variant="contained" size="small" color="secondary" className='clearVotesButton'>Clear Votes</Button>
+                    }
+                </div>
                 <div className='votingContainer'>
-                {votingButtons}
+                    {votingButtons}
                 </div>
             </div>
         )
