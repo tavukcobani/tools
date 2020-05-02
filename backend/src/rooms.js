@@ -24,12 +24,12 @@ const addUserToExistingRoom = (room, userId, name, role) => {
         return { error: `there is already a user called ${user.name} in this room` };
     }
 
-    room.users.push({ id: userId, name: name , role: role});
+    room.users.push({ id: userId, name: name, role: role });
     return { room };
 }
 
 const createNewRoomForUser = (userId, name, roomId, role) => {
-    const room = { id: roomId, users: [{ id: userId, name: name, role: role }] };
+    const room = { id: roomId, name: '', users: [{ id: userId, name: name, role: role }] };
 
     rooms.push(room);
     return { room };
@@ -44,4 +44,34 @@ const getRoom = (roomId) => {
     }
 };
 
-module.exports = { join, remove };
+const setRoomName = (roomId, name) => {
+    const room = rooms.find((room) => room.id == roomId);
+    if (room) {
+        room.name = name;
+    }
+    return room;
+}
+
+const setUserVote = (roomId, userId, vote) => {
+    const room = rooms.find((room) => room.id == roomId);
+    if (room) {
+        const user = room.users.find((usr) => usr.id == userId )
+        if (user) {
+            user.vote = vote;
+        }
+    }
+    return room;
+}
+
+
+const clearVotes = (roomId) => {
+    const room = rooms.find((room) => room.id == roomId);
+    if (room) {
+        room.users.forEach(usr => {
+            usr.vote = undefined;
+        })
+    }
+    return room;
+}
+
+module.exports = { join, remove, setRoomName, setUserVote, clearVotes };
