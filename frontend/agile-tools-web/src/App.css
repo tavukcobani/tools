@@ -20,74 +20,90 @@
   align-items: center;
 }
 
-.mainHomeContainer{
+.mainHomeContainer {
   margin-top: 20px;
   align-items: center;
 }
 .startBtn {
   margin-left: 16px !important;
 }
-.sessionInput{
+.sessionInput {
   margin-left: 16px !important;
 }
-
-#roomNameInput{
-  padding: 8px !important;
-}
-#roomInput{
-  padding: 8px !important;
-}
-#userName{
-  padding: 8px !important;
+.playersTableContainer {
+  display: inline-block;
 }
 
-.MuiInputBase-input{
+.tableParentContainer {
+  width: 100%;
+  margin: auto;
+}
+
+.tableContainer {
+  display: table-cell;
+}
+
+#roomNameInput {
+  padding: 8px !important;
+}
+#roomInput {
+  padding: 8px !important;
+}
+#userName {
+  padding: 8px !important;
+}
+
+.MuiInputBase-input {
   padding: 16px 0px 0px 0px !important;
 }
-.MuiInputLabel-outlined{
+.MuiInputLabel-outlined {
   transform: translate(4px, 8px) scale(1) !important;
 }
-.MuiInputLabel-outlined.MuiInputLabel-shrink{
-  transform: translate(14px, -6px) scale(.75) !important;
+.MuiInputLabel-outlined.MuiInputLabel-shrink {
+  transform: translate(14px, -6px) scale(0.75) !important;
 }
 
 .App-link {
   color: #61dafb;
 }
 
-.gridRow{
-  margin:32px 32px !important;
+.gridRow {
+  margin: 32px 32px !important;
 }
-.container{
+.container {
   text-align: center;
-  margin:32px 32px !important;
+  margin: 32px 32px !important;
 }
 
-.votingContainer{
- width: 100%;
- margin-top: 50px;
- text-align: center;
+.votingControl {
+  margin: 24px;
 }
 
-.votingButton{
+.votingContainer {
+  width: 100%;
+  margin-top: 50px;
+  text-align: center;
+}
+
+.votingButton {
   margin: 4px !important;
 }
 
-.votingDiv{
+.votingDiv {
   max-width: 30%;
-  margin:auto;
+  margin: auto;
 }
 
-.clearVotesButton{
+.clearVotesButton {
   margin-top: 20px;
 }
 
-.usersContainer{
+.usersContainer {
   margin-top: 50px;
 }
 
-.parentGrid{
-  margin-top:32px;
+.parentGrid {
+  margin-top: 32px;
 }
 
 @keyframes App-logo-spin {

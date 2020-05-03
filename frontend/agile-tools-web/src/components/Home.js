@@ -22,7 +22,7 @@ class HomeComponent extends React.Component {
         return (
             <Container fixed className='mainHomeContainer'>
                 <Grid container spacing={1} justify='center'>
-                    <Grid item xs={5}>
+                    <Grid item lg={5} xs={12}>
                         <Paper variant="outlined">
                             <Typography variant="h5" component="h2" align="center">Planning Poker</Typography>
 
