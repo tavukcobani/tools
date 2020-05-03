@@ -12,16 +12,21 @@ import { connectRouter } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
 const history = createBrowserHistory();
 
-const rootReducer = combineReducers({poker: pokerReducer, router: connectRouter(history)});
-const store = createStore(rootReducer, {poker:{}}, applyMiddleware(thunk, ReduxLogger));
+const rootReducer = combineReducers({ poker: pokerReducer, router: connectRouter(history) });
+let store;
+if (process.env.NODE_ENV === "development") {
+  store = createStore(rootReducer, { poker: {} }, applyMiddleware(thunk, ReduxLogger));
+} else {
+  store = createStore(rootReducer, { poker: {} }, applyMiddleware(thunk));
+}
 
 const rootElement = document.getElementById('root');
 
 ReactDOM.render((
   <Provider store={store}>
     <React.StrictMode>
-    <App history={history}/>
-  </React.StrictMode>
+      <App history={history} />
+    </React.StrictMode>
   </Provider>
 ), rootElement);
 // If you want your app to work offline and load faster, you can change
