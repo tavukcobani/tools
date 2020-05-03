@@ -76,7 +76,7 @@ class PokerSession extends React.Component {
         if (observers.length > 0) {
             observersTable = (
                 <div>
-                    <div> Observers</div>
+                    <Typography variant='h6'> Observers ({observers.length})</Typography>
                     <TableContainer >
                         <Table aria-label="Observers Table" size="small" style={{ display: 'initial' }}>
                             <TableBody>
