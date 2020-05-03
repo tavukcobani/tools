@@ -15,14 +15,6 @@ const history = createBrowserHistory();
 const rootReducer = combineReducers({poker: pokerReducer, router: connectRouter(history)});
 const store = createStore(rootReducer, {poker:{}}, applyMiddleware(thunk, ReduxLogger));
 
-// ReactDOM.render(
-//   <React.StrictMode>
-//     <App />
-//   </React.StrictMode>,
-//   document.getElementById('root')
-// );
-
-
 const rootElement = document.getElementById('root');
 
 ReactDOM.render((

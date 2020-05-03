@@ -1,7 +1,8 @@
 import React from 'react';
-import { Button, TextField, Typography } from '@material-ui/core';
+import { Button, TextField, Typography, Table, TableContainer, TableBody, TableCell, TableRow, Paper, TableHead } from '@material-ui/core';
 import { connect } from 'react-redux';
 import client from "socket.io-client";
+import PlayersTable from './PlayersTable';
 //let socket = client("ec2-54-213-87-137.us-west-2.compute.amazonaws.com:80");
 let socket = client("localhost:4000");
 
@@ -13,7 +14,7 @@ class PokerSession extends React.Component {
             userName: '',
             userNameError: false,
             userJoined: false,
-            role: 'Admin',
+            userRole: '',
             userId: '',
             sessionName: '',
         };
@@ -50,7 +51,7 @@ class PokerSession extends React.Component {
         }
         else {
             socket.emit('join', { name: this.state.userName, roomId: this.state.sessionId, role: role }, (resp) => {
-                this.setState({ userJoined: true, userId: resp.userId });
+                this.setState({ userJoined: true, userId: resp.userId, userRole: role });
             });
         }
     }
@@ -69,13 +70,33 @@ class PokerSession extends React.Component {
     render() {
         const fibonacci = ['0', '1/2', '1', '2', '3', '5', '8', '13', '20', '40', '100', '?'];
         let users = this.props.room.users || [];
-        const usersDisplay = users.map((usr) => {
-            return (<div key={usr.id}>
-                {usr.name}: {usr.vote}
-            </div>)
-        });
+        let observers = users.filter((usr) => usr.role === 'observer');
+
+        let observersTable = '';
+        if (observers.length > 0) {
+            observersTable = (
+                <div>
+                    <Typography variant='h6'> Observers ({observers.length})</Typography>
+                    <TableContainer >
+                        <Table aria-label="Observers Table" size="small" style={{ display: 'initial' }}>
+                            <TableBody>
+                                {observers.map((row) => (
+                                    <TableRow key={row.name}>
+                                        <TableCell component="th" scope="row">
+                                            {row.name}
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </div>
+            );
+        }
+
+
         let votingButtons = '';
-        if (this.state.userJoined) {
+        if (this.state.userJoined && this.state.userRole === 'player') {
             let votingButtonsArray = [];
             fibonacci.forEach((element, index) => {
                 votingButtonsArray.push(<Button variant="contained" size="small" color="primary" key={'vote_btn_' + index} onClick={() => this.handleVote(element)} className="votingButton">{element}</Button>);
@@ -100,12 +121,11 @@ class PokerSession extends React.Component {
                             <Button variant="contained" size="small" onClick={() => this.handleJoinSession('observer')} color="primary" className="startBtn">Observer</Button>
                         </div>
                     }
-                    <Typography variant='h5'>{this.props.room.name}</Typography>
-
+                     {this.state.userJoined && <Typography variant='h5'>Estimating: {this.props.room.name}</Typography>}
+                
                 </div>
-                <div>
-                    <div className='usersContainer'>{usersDisplay}</div>
-                </div>
+                <PlayersTable userId={this.state.userId}></PlayersTable>
+                {observersTable}
                 <div className='votingControl'>
                     {this.state.userJoined &&
                         <Button onClick={() => this.clearVotes()} variant="contained" size="small" color="secondary" className='clearVotesButton'>Clear Votes</Button>
@@ -115,9 +135,9 @@ class PokerSession extends React.Component {
                     {votingButtons}
                 </div>
                 {this.state.userJoined &&
-                    <div>
+                    <div style={{margin:24}}>
                         <TextField id="roomNameInput" label="Session Name" variant="outlined" required className="sessionInput"
-                            onChange={this.handleSessionNameChange}/>
+                            onChange={this.handleSessionNameChange} />
                         <Button variant="contained" onClick={() => this.setSessionName()} color="primary" className="startBtn">Set</Button>
                         <div>
                         </div>
