@@ -1,8 +1,9 @@
 import React from 'react';
-import { Button, TextField, Typography, Grid } from '@material-ui/core';
+import { Button, TextField, Typography } from '@material-ui/core';
 import { connect } from 'react-redux';
 import client from "socket.io-client";
-let socket = client("ec2-54-213-87-137.us-west-2.compute.amazonaws.com:80");
+//let socket = client("ec2-54-213-87-137.us-west-2.compute.amazonaws.com:80");
+let socket = client("localhost:4000");
 
 class PokerSession extends React.Component {
     constructor(props) {
@@ -26,7 +27,6 @@ class PokerSession extends React.Component {
     componentDidMount() {
         socket.on('message', (message) => {
             this.props.serverMessageReceived(message)
-            // console.log(`message from server`, message);
         });
     }
 
@@ -96,33 +96,33 @@ class PokerSession extends React.Component {
                                 error={this.state.userNameError}
                                 onChange={this.handleUserNameChange}
                                 value={this.state.userName} />
-                            <Button variant="contained" onClick={() => this.handleJoinSession('player')} color="primary" className="startBtn">Player</Button>
-                            <Button variant="contained" onClick={() => this.handleJoinSession('observer')} color="primary" className="startBtn">Observer</Button>
+                            <Button variant="contained" size="small" onClick={() => this.handleJoinSession('player')} color="primary" className="startBtn">Player</Button>
+                            <Button variant="contained" size="small" onClick={() => this.handleJoinSession('observer')} color="primary" className="startBtn">Observer</Button>
                         </div>
                     }
-                    {this.state.userJoined &&
-                        <div>
-                            <TextField id="roomName" label="Session Name" variant="outlined" required className="sessionInput"
-                                onChange={this.handleSessionNameChange}
-                            />
-                            <Button variant="contained" onClick={() => this.setSessionName()} color="primary" className="startBtn">Set</Button>
-                            <Typography variant='h5'>{this.props.room.name}</Typography>
-                            <div>
-                            </div>
-                        </div>
-                    }
+                    <Typography variant='h5'>{this.props.room.name}</Typography>
+
                 </div>
                 <div>
                     <div className='usersContainer'>{usersDisplay}</div>
                 </div>
                 <div className='votingControl'>
                     {this.state.userJoined &&
-                        <Button variant="contained" onClick={() => this.clearVotes()} variant="contained" size="small" color="secondary" className='clearVotesButton'>Clear Votes</Button>
+                        <Button onClick={() => this.clearVotes()} variant="contained" size="small" color="secondary" className='clearVotesButton'>Clear Votes</Button>
                     }
                 </div>
                 <div className='votingContainer'>
                     {votingButtons}
                 </div>
+                {this.state.userJoined &&
+                    <div>
+                        <TextField id="roomNameInput" label="Session Name" variant="outlined" required className="sessionInput"
+                            onChange={this.handleSessionNameChange}/>
+                        <Button variant="contained" onClick={() => this.setSessionName()} color="primary" className="startBtn">Set</Button>
+                        <div>
+                        </div>
+                    </div>
+                }
             </div>
         )
     }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, TextField, Typography, Grid, Card, Container } from '@material-ui/core';
+import { Button, TextField, Typography, Grid, Container, Paper } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -21,9 +21,9 @@ class HomeComponent extends React.Component {
     render() {
         return (
             <Container fixed className='mainHomeContainer'>
-                <Grid container spacing={1} >
+                <Grid container spacing={1} justify='center'>
                     <Grid item xs={5}>
-                        <Card variant="outlined">
+                        <Paper variant="outlined">
                             <Typography variant="h5" component="h2" align="center">Planning Poker</Typography>
 
                             <Grid item xs={12} className="gridRow">
@@ -34,14 +34,14 @@ class HomeComponent extends React.Component {
                             <Grid item xs={12} className="gridRow">
                                 <div>
                                     <Typography variant="body1" component="span">Join Existing Session</Typography>
-                                    <TextField id="room" label="Session Id" variant="outlined" required className="sessionInput"
+                                    <TextField id="roomInput" label="Session Id" variant="outlined" required className="sessionInput"
                                         error={this.state.sessionIdError}
                                         onChange={this.handleSessionIdChange}
                                         value={this.state.sessionId} />
                                     <Button variant="contained" onClick={this.handleJoinExistingSession} color="primary" className="startBtn">Join</Button>
                                 </div>
                             </Grid>
-                        </Card>
+                        </Paper>
                     </Grid>
                 </Grid>
             </Container>
