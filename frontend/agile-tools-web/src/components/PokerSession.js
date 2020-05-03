@@ -124,7 +124,7 @@ class PokerSession extends React.Component {
                      {this.state.userJoined && <Typography variant='h5'>Estimating: {this.props.room.name}</Typography>}
                 
                 </div>
-                <PlayersTable></PlayersTable>
+                <PlayersTable userId={this.state.userId}></PlayersTable>
                 {observersTable}
                 <div className='votingControl'>
                     {this.state.userJoined &&
