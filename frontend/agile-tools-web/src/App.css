@@ -31,6 +31,16 @@
   margin-left: 16px !important;
 }
 
+#roomNameInput{
+  padding: 8px !important;
+}
+#roomInput{
+  padding: 8px !important;
+}
+#userName{
+  padding: 8px !important;
+}
+
 .MuiInputBase-input{
   padding: 16px 0px 0px 0px !important;
 }
