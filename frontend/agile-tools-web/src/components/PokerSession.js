@@ -1,10 +1,10 @@
 import React from 'react';
-import { Button, TextField, Typography, Table, TableContainer, TableBody, TableCell, TableRow, Paper, TableHead } from '@material-ui/core';
+import { Button, TextField, Typography, Table, TableContainer, TableBody, TableCell, TableRow } from '@material-ui/core';
 import { connect } from 'react-redux';
 import client from "socket.io-client";
 import PlayersTable from './PlayersTable';
-//let socket = client("ec2-54-213-87-137.us-west-2.compute.amazonaws.com:80");
-let socket = client("localhost:4000");
+let socket = client("ec2-54-213-87-137.us-west-2.compute.amazonaws.com:80");
+//let socket = client("localhost:4000");
 
 class PokerSession extends React.Component {
     constructor(props) {

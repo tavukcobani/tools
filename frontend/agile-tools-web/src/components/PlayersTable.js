@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, TableContainer, TableBody, TableCell, TableRow, Paper, TableHead, Typography } from '@material-ui/core';
+import { Table, TableContainer, TableBody, TableCell, TableRow,Typography } from '@material-ui/core';
 import { connect } from 'react-redux';
 import CheckCircleSharpIcon from '@material-ui/icons/CheckCircleSharp';
 import HelpIcon from '@material-ui/icons/Help';
@@ -7,9 +7,6 @@ import { green } from '@material-ui/core/colors';
 
 class PlayersTableComponent extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
     render() {
         let users = this.props.room.users || [];
         const userId = this.props.userId;
