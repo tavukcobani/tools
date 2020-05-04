@@ -13,6 +13,6 @@ echo 'Building the application assets....'
 npm run build
 
 echo 'Uploading to s3....'
-aws s3 cp build s3://agile-tools-web/ --recursive --acl public-read
+aws s3 cp build s3://agilesofthub.com/ --recursive --acl public-read
 
 echo 'All done!'
