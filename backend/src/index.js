@@ -15,6 +15,8 @@ const app = express();
 const server = require('http').createServer(app);
 const io = socketIo(server);
 
+//TODO: change me to only allow our domain
+io.set('origins', '*:*');
 
 io.on('connection', (socket) => {
     console.log('new connection');
