@@ -9,6 +9,8 @@ import { Route} from 'react-router';
 import {ConnectedRouter} from 'connected-react-router';
 
 function App(props) {
+  console.log("%c What are you looking for? If you see this message this means that your PC is already mine", "background: red; color: yellow; font-size: x-large");
+  console.log("%c 💀👹 just kidding, but seriously, close the f**** console and get a life... 👹💀 ", "background: blue; color: yellow; font-size: x-large");
   return (
     <div>
       <AppBar position="static">

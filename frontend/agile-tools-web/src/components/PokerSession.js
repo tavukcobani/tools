@@ -85,7 +85,7 @@ class PokerSession extends React.Component {
         } else {
             let isConsensus = players.every(p => p.vote === players[0].vote && players[0].vote);
             // At this point, blow the confetti cannon
-            if (this.state.votesReady &&(this.state.votesReady !=prevState.votesReady) &&  isConsensus && players.length > 1) {
+            if (this.state.votesReady && (this.state.votesReady !== prevState.votesReady) && isConsensus && players.length > 1) {
                 const canvas = this.refs.canvas;
                 BlowCannon(canvas);
             }
