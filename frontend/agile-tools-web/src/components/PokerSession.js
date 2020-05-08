@@ -3,8 +3,16 @@ import { Button, TextField, Typography, Table, TableContainer, TableBody, TableC
 import { connect } from 'react-redux';
 import client from "socket.io-client";
 import PlayersTable from './PlayersTable';
-let socket = client("ec2-54-213-87-137.us-west-2.compute.amazonaws.com:80");
-//let socket = client("localhost:4000");
+import BlowCannon from './ConfettiCannon';
+
+let socket;
+
+if (process.env.NODE_ENV === 'development') {
+    socket = client("localhost:4000");
+}
+else {
+    socket = client("backend.agilesofthub.com");
+}
 
 class PokerSession extends React.Component {
     constructor(props) {
@@ -17,6 +25,7 @@ class PokerSession extends React.Component {
             userRole: '',
             userId: '',
             sessionName: '',
+            votesReady: false
         };
         this.handleUserNameChange = this.handleUserNameChange.bind(this);
         this.handleJoinSession = this.handleJoinSession.bind(this);
@@ -66,12 +75,27 @@ class PokerSession extends React.Component {
         });
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        let users = this.props.room.users || [];
+        let players = users.filter((usr) => usr.role === 'player');
+        if (this.state.votesReady && !(players.length > 0 && !players.some(p => !p.vote))) {
+            this.setState({ votesReady: false })
+        } else if (!this.state.votesReady && (players.length > 0 && !players.some(p => !p.vote))) {
+            this.setState({ votesReady: true })
+        } else {
+            let isConsensus = players.every(p => p.vote === players[0].vote && players[0].vote);
+            // At this point, blow the confetti cannon
+            if (this.state.votesReady && (this.state.votesReady !== prevState.votesReady) && isConsensus && players.length > 1) {
+                const canvas = this.refs.canvas;
+                BlowCannon(canvas);
+            }
+        }
+    }
 
     render() {
         const fibonacci = ['0', '1/2', '1', '2', '3', '5', '8', '13', '20', '40', '100', '?'];
         let users = this.props.room.users || [];
         let observers = users.filter((usr) => usr.role === 'observer');
-
         let observersTable = '';
         if (observers.length > 0) {
             observersTable = (
@@ -99,7 +123,7 @@ class PokerSession extends React.Component {
         if (this.state.userJoined && this.state.userRole === 'player') {
             let votingButtonsArray = [];
             fibonacci.forEach((element, index) => {
-                votingButtonsArray.push(<Button variant="contained" size="small" color="primary" key={'vote_btn_' + index} onClick={() => this.handleVote(element)} className="votingButton">{element}</Button>);
+                votingButtonsArray.push(<Button variant="contained" size="small" color="primary" key={'vote_btn_' + index} onClick={() => this.handleVote(element)} className="votingButton" disabled={this.state.votesReady}>{element}</Button>);
             });
             votingButtons = (
 
@@ -121,8 +145,8 @@ class PokerSession extends React.Component {
                             <Button variant="contained" size="small" onClick={() => this.handleJoinSession('observer')} color="primary" className="startBtn">Observer</Button>
                         </div>
                     }
-                     {this.state.userJoined && <Typography variant='h5'>Estimating: {this.props.room.name}</Typography>}
-                
+                    {this.state.userJoined && <Typography variant='h5'>Estimating: {this.props.room.name}</Typography>}
+
                 </div>
                 <PlayersTable userId={this.state.userId}></PlayersTable>
                 {observersTable}
@@ -135,7 +159,7 @@ class PokerSession extends React.Component {
                     {votingButtons}
                 </div>
                 {this.state.userJoined &&
-                    <div style={{margin:24}}>
+                    <div style={{ margin: 24 }}>
                         <TextField id="roomNameInput" label="Session Name" variant="outlined" required className="sessionInput"
                             onChange={this.handleSessionNameChange} />
                         <Button variant="contained" onClick={() => this.setSessionName()} color="primary" className="startBtn">Set</Button>
