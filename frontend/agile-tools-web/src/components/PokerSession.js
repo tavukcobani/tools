@@ -1,10 +1,10 @@
 import React from 'react';
-import { Button, TextField, Typography, Table, TableContainer, TableBody, TableCell, TableRow } from '@material-ui/core';
+import { Button, TextField, Typography, Table, TableContainer, TableBody, TableCell, TableRow, Box, Tooltip, ButtonBase } from '@material-ui/core';
 import { connect } from 'react-redux';
 import client from "socket.io-client";
 import PlayersTable from './PlayersTable';
 import BlowCannon from './ConfettiCannon';
-
+import Card from './Card';
 let socket;
 
 if (process.env.NODE_ENV === 'development') {
@@ -46,6 +46,7 @@ class PokerSession extends React.Component {
         }
         this.setState({ userName: e.target.value });
     }
+
     handleSessionNameChange(e) {
         this.setState({ sessionName: e.target.value });
     }
@@ -60,7 +61,11 @@ class PokerSession extends React.Component {
         }
         else {
             socket.emit('join', { name: this.state.userName, roomId: this.state.sessionId, role: role }, (resp) => {
-                this.setState({ userJoined: true, userId: resp.userId, userRole: role });
+                if (resp && resp.userId) {
+                    this.setState({ userJoined: true, userId: resp.userId, userRole: role });
+                } else {
+                    this.setState({ userNameError: true });
+                }
             });
         }
     }
@@ -70,6 +75,7 @@ class PokerSession extends React.Component {
             this.setState({ userJoined: true });
         });
     }
+
     clearVotes() {
         socket.emit('clearVotes', { roomId: this.state.sessionId }, () => {
         });
@@ -93,7 +99,7 @@ class PokerSession extends React.Component {
     }
 
     render() {
-        const fibonacci = ['0', '1/2', '1', '2', '3', '5', '8', '13', '20', '40', '100', '?'];
+        const fibonacci = ['0', '1/2', '1', '2', '3', '5', '8', '13', '20', '40', '100', '?', 'Yes', 'No'];
         let users = this.props.room.users || [];
         let observers = users.filter((usr) => usr.role === 'observer');
         let observersTable = '';
@@ -118,52 +124,72 @@ class PokerSession extends React.Component {
             );
         }
 
-
         let votingButtons = '';
         if (this.state.userJoined && this.state.userRole === 'player') {
             let votingButtonsArray = [];
-            fibonacci.forEach((element, index) => {
-                votingButtonsArray.push(<Button variant="contained" size="small" color="primary" key={'vote_btn_' + index} onClick={() => this.handleVote(element)} className="votingButton" disabled={this.state.votesReady}>{element}</Button>);
-            });
-            votingButtons = (
 
+
+
+            // fibonacci.forEach((element, index) => {
+            //     votingButtonsArray.push(<Button variant="contained" size="small" color="primary" key={'vote_btn_' + index} onClick={() => this.handleVote(element)} className="votingButton" disabled={this.state.votesReady}>{element}</Button>);
+            // });
+
+            fibonacci.forEach((element, index) => {
+                votingButtonsArray.push(
+                    <ButtonBase key={'vote_btn_' + index} onClick={() => this.handleVote(element)} disabled={this.state.votesReady}  className='cardButtonBase'>
+                        <Card ripple rank={element} />
+                    </ButtonBase>
+                    // <Button variant="contained" size="small" color="primary" key={'vote_btn_' + index} onClick={() => this.handleVote(element)} className="votingButton" disabled={this.state.votesReady}>{element}</Button>
+                );
+            });
+
+
+            votingButtons = (
                 <div className='votingDiv'>
                     {votingButtonsArray}
                 </div>);
         }
+
         return (
             <div className='container'>
                 <div>
                     <Typography variant="body1" component="span"></Typography>
                     {!this.state.userJoined &&
-                        <div>
-                            <TextField id="userName" label="User Name" variant="outlined" required className="sessionInput"
-                                error={this.state.userNameError}
-                                onChange={this.handleUserNameChange}
-                                value={this.state.userName} />
-                            <Button variant="contained" size="small" onClick={() => this.handleJoinSession('player')} color="primary" className="startBtn">Player</Button>
-                            <Button variant="contained" size="small" onClick={() => this.handleJoinSession('observer')} color="primary" className="startBtn">Observer</Button>
+                        <div style={{ position: 'absolute', left: '50%', top: '140px', transform: 'translate(-50%, -50%)' }}>
+                            <Box boxShadow={3} className='joinSessionBox'>
+                                <Typography variant='h6' style={{ paddingBottom: 12 }}>Join the session as</Typography>
+                                <TextField id="userName" label="User Name" variant="outlined" required className="sessionInput"
+                                    error={this.state.userNameError}
+                                    onChange={this.handleUserNameChange}
+                                    value={this.state.userName} />
+                                <Tooltip title="Join as Player" aria-label="Join as Player">
+                                    <Button variant="contained" size="small" onClick={() => this.handleJoinSession('player')} color="primary" className="startBtn">Player</Button>
+                                </Tooltip>
+                                <Tooltip title="Join as Observer" aria-label="Join as Observer">
+                                    <Button variant="contained" size="small" onClick={() => this.handleJoinSession('observer')} color="primary" className="startBtn">Observer</Button>
+                                </Tooltip>
+                            </Box>
                         </div>
                     }
                     {this.state.userJoined && <Typography variant='h5'>Estimating: {this.props.room.name}</Typography>}
 
                 </div>
-                <PlayersTable userId={this.state.userId}></PlayersTable>
-                {observersTable}
-                <div className='votingControl'>
-                    {this.state.userJoined &&
-                        <Button onClick={() => this.clearVotes()} variant="contained" size="small" color="secondary" className='clearVotesButton'>Clear Votes</Button>
-                    }
-                </div>
-                <div className='votingContainer'>
-                    {votingButtons}
-                </div>
                 {this.state.userJoined &&
-                    <div style={{ margin: 24 }}>
-                        <TextField id="roomNameInput" label="Session Name" variant="outlined" required className="sessionInput"
-                            onChange={this.handleSessionNameChange} />
-                        <Button variant="contained" onClick={() => this.setSessionName()} color="primary" className="startBtn">Set</Button>
-                        <div>
+                    <div>
+                        <PlayersTable userId={this.state.userId}></PlayersTable>
+                        {observersTable}
+                        <div className='votingControl'>
+                            <Button onClick={() => this.clearVotes()} variant="contained" size="small" color="secondary" className='clearVotesButton'>Clear Votes</Button>
+                        </div>
+                        <div className='votingContainer'>
+                            {votingButtons}
+                        </div>
+                        <div style={{ margin: 24 }}>
+                            <TextField id="roomNameInput" label="Session Name" variant="outlined" required className="sessionInput"
+                                onChange={this.handleSessionNameChange} />
+                            <Button size="small" variant="contained" onClick={() => this.setSessionName()} color="primary" className="startBtn">Set</Button>
+                            <div>
+                            </div>
                         </div>
                     </div>
                 }
