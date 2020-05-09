@@ -26,6 +26,7 @@
 }
 .startBtn {
   margin-left: 16px !important;
+  background-color: #64b5f6 !important;
 }
 .sessionInput {
   margin-left: 16px !important;
@@ -89,10 +90,10 @@
   margin: 4px !important;
 }
 
-.votingDiv {
+/* .votingDiv {
   max-width: 30%;
   margin: auto;
-}
+} */
 
 .clearVotesButton {
   margin-top: 20px;
@@ -106,6 +107,21 @@
   margin-top: 32px;
 }
 
+.joinSessionBox{
+   padding-top: 16px;
+   padding-bottom: 40px;
+   margin : 8px;
+   width: 500px;
+}
+
+.appToolBar{
+  background-color: #64b5f6;
+}
+
+.primaryButton{
+  background-color: #64b5f6;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -114,3 +130,4 @@
     transform: rotate(360deg);
   }
 }
+

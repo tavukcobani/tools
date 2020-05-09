@@ -10,7 +10,7 @@ const BlowCannon = (canvas) => {
             particleCount: Math.floor(count * particleRatio)
         }));
     }
-    var count = 500;
+    var count = 300;
     var defaults = {
         origin: { y: 0.7 }
     };

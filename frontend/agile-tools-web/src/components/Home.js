@@ -1,8 +1,7 @@
 import React from 'react';
-import { Button, TextField, Typography, Grid, Container, Paper } from '@material-ui/core';
+import { Button, TextField, Typography, Grid, Container, Box, Tooltip } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
-
 
 class HomeComponent extends React.Component {
 
@@ -23,12 +22,13 @@ class HomeComponent extends React.Component {
             <Container fixed className='mainHomeContainer'>
                 <Grid container spacing={1} justify='center'>
                     <Grid item lg={5} xs={12}>
-                        <Paper variant="outlined">
+                        <Box variant="outlined" boxShadow={3} style={{ padding: 4 }}>
                             <Typography variant="h5" component="h2" align="center">Planning Poker</Typography>
-
                             <Grid item xs={12} className="gridRow">
                                 <Typography variant="body1" component="span">Start New Session</Typography>
-                                <Button variant="contained" onClick={this.handleStartNewSession} color="primary" className="startBtn">Start</Button>
+                                <Tooltip title="Start a new session" aria-label="Start a new session">
+                                    <Button size="small" variant="contained" onClick={this.handleStartNewSession} color="primary" className="startBtn">Start</Button>
+                                </Tooltip>
                             </Grid>
 
                             <Grid item xs={12} className="gridRow">
@@ -38,10 +38,12 @@ class HomeComponent extends React.Component {
                                         error={this.state.sessionIdError}
                                         onChange={this.handleSessionIdChange}
                                         value={this.state.sessionId} />
-                                    <Button variant="contained" onClick={this.handleJoinExistingSession} color="primary" className="startBtn">Join</Button>
+                                    <Tooltip title="Join session by id" aria-label="Join session by id">
+                                        <Button size="small" variant="contained" onClick={this.handleJoinExistingSession} color="primary" className="startBtn">Join</Button>
+                                    </Tooltip>
                                 </div>
                             </Grid>
-                        </Paper>
+                        </Box>
                     </Grid>
                 </Grid>
             </Container>
@@ -74,7 +76,6 @@ class HomeComponent extends React.Component {
         this.props.history.push('/pokerSession/' + uuidv4());
     }
 }
-
 
 const mapStateToProps = (state, dispatch) => ({
     poker: state.poker

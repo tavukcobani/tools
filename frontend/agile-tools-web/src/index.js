@@ -24,9 +24,9 @@ const rootElement = document.getElementById('root');
 
 ReactDOM.render((
   <Provider store={store}>
-    <React.StrictMode>
+    <React.Fragment>
       <App history={history} />
-    </React.StrictMode>
+    </React.Fragment>
   </Provider>
 ), rootElement);
 // If you want your app to work offline and load faster, you can change
