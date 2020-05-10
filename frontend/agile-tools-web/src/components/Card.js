@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+// DON'T REMOVE ME
+import styles from './card.css';
 
 class Card extends Component {  
-  render() {
-
+    render() {
     return (
       <div className="wrapper">
          {/* <ButtonBase className='cardButtonBase'> */}
