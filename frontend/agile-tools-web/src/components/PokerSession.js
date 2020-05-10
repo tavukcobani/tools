@@ -137,7 +137,7 @@ class PokerSession extends React.Component {
             fibonacci.forEach((element, index) => {
                 votingButtonsArray.push(
                     <ButtonBase key={'vote_btn_' + index} onClick={() => this.handleVote(element)} disabled={this.state.votesReady}  className='cardButtonBase'>
-                        <Card ripple rank={element} />
+                        <Card ripple rank={element} isDisabled={this.state.votesReady} />
                     </ButtonBase>
                     // <Button variant="contained" size="small" color="primary" key={'vote_btn_' + index} onClick={() => this.handleVote(element)} className="votingButton" disabled={this.state.votesReady}>{element}</Button>
                 );
