@@ -128,21 +128,13 @@ class PokerSession extends React.Component {
         if (this.state.userJoined && this.state.userRole === 'player') {
             let votingButtonsArray = [];
 
-
-
-            // fibonacci.forEach((element, index) => {
-            //     votingButtonsArray.push(<Button variant="contained" size="small" color="primary" key={'vote_btn_' + index} onClick={() => this.handleVote(element)} className="votingButton" disabled={this.state.votesReady}>{element}</Button>);
-            // });
-
             fibonacci.forEach((element, index) => {
                 votingButtonsArray.push(
-                    <ButtonBase key={'vote_btn_' + index} onClick={() => this.handleVote(element)} disabled={this.state.votesReady}  className='cardButtonBase'>
+                    <ButtonBase key={'vote_btn_' + index} onClick={() => this.handleVote(element)} disabled={this.state.votesReady} className='cardButtonBase'>
                         <Card ripple rank={element} isDisabled={this.state.votesReady} />
                     </ButtonBase>
-                    // <Button variant="contained" size="small" color="primary" key={'vote_btn_' + index} onClick={() => this.handleVote(element)} className="votingButton" disabled={this.state.votesReady}>{element}</Button>
                 );
             });
-
 
             votingButtons = (
                 <div className='votingDiv'>
@@ -185,9 +177,11 @@ class PokerSession extends React.Component {
                             {votingButtons}
                         </div>
                         <div style={{ margin: 24 }}>
-                            <TextField id="roomNameInput" label="Session Name" variant="outlined" required className="sessionInput"
+                            <TextField id="roomNameInput" label="Session Name" variant="outlined" className="sessionInput"
                                 onChange={this.handleSessionNameChange} />
-                            <Button size="small" variant="contained" onClick={() => this.setSessionName()} color="primary" className="startBtn">Set</Button>
+                            <Tooltip title="Set the session name" aria-label="Set the session name">
+                                <Button size="small" variant="contained" onClick={() => this.setSessionName()} color="primary" className="startBtn">Set</Button>
+                            </Tooltip>
                             <div>
                             </div>
                         </div>
