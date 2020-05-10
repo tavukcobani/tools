@@ -21,7 +21,7 @@
   }
 
   .disabledCard{
-    background: red !important;
+    opacity: .6;
   }
 
   /* div .card :hover{
